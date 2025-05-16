@@ -6,16 +6,16 @@ Licensed under the MIT License
 
 Welcome to
 
-#POUPETTE PLAYLIST PACKER
+# POUPETTE PLAYLIST PACKER
 
 (la Poupette is my dog, she's the one preparing your playlists behind the scenes!)
 
-##Description
+## Description
 
 This script allows you to get a snipe playlist of all your scores below a "target" in your country leaderboard!
 Playlist is pooped out in the folder the executable is in, just move it to your playlists folder!
 
-##Setup
+## Setup
 
 fill out config.json like so, and lauch PoupettePlaylistPacker.exe :
 
@@ -33,7 +33,7 @@ fill out config.json like so, and lauch PoupettePlaylistPacker.exe :
 Put a ‘cover.png’ image in the same folder if you think you have a good cover...
 ...you really can't compete though
 
-##random stuff and Poupette ASCII art
+## random stuff and Poupette ASCII art
 
 Very messy code, half french half english, it's my first actual piece of software and first executable
 Very much inspired by Hatopopvr's MyBSList
