@@ -3,7 +3,8 @@
     "MAX_MAPS": -1,
     "SORT": "recent",
     "TARGET": 1,
-    "I_PROMISE_IM_NOT_DDOSING": 0.3,
+    "I_PROMISE_IM_NOT_DDOSING": 0.2,
     "CHECK_SCORESABER": true,
-    "last_refresh": "2025-05-11_15-21-27"
+    "CHECK_NEW_MAPS": true,
+    "last_refresh": "2025-05-17_01-09-37"
 }

@@ -82,6 +82,7 @@ TARGET = config["TARGET"]
 COUNTRY = get_country()
 PASDERATELIMITSVP = config["I_PROMISE_IM_NOT_DDOSING"]
 Check_SS = config["CHECK_SCORESABER"]
+Check_newMaps = config["CHECK_NEW_MAPS"]
 LastUpdate = config["last_refresh"]
 
 
@@ -163,9 +164,15 @@ def gen_playlist_countryRank():
         "image": "base64," + image_to_base64("cover.png")
     }
     print("Generating playlist...")
+    sum=0
+    huh=0
     comptTarget=0
+
+    huhs = []
+
     for _, row in df.iterrows():
         if(isinstance(row["CountryRank"], int)):
+            sum+=row["CountryRank"]
             if row["CountryRank"] > TARGET:
                 comptTarget+=1
                 match = re.match(r"_(.+)_Solo((?:[A-Z][a-z]*)+)", row["Difficulty"])
@@ -185,27 +192,29 @@ def gen_playlist_countryRank():
                         "name": diff
                     }]
                 })
+        else:
+            huh+=1
+            huhs.append({"Song": row["songName"],"Level": row["difficulty"]["difficultyRaw"],"LevelAuthor": row["levelAuthorName"]})
     total = len(df)
     pourcentage = round(comptTarget / total * 100, 2) if total > 0 else 0
-    playlist["playlistTitle"] = f"Snipe top {TARGET} {COUNTRY} ({comptTarget}/{total} : {pourcentage}%)"
+    playlist["playlistTitle"] = f"Snipe top {TARGET} {COUNTRY} ({total-comptTarget}/{total} : {100-pourcentage}%)"
 
-
+    
+    print("Country ranks OK, average country rank on sample: ",str(sum/(len(df)-huh)),", ",str(huh)," abnormalities (see above):", print(huhs))
+    
     return json.dumps(playlist, indent=4)
 
 
 def main():
     
     if Check_SS:
-        print("Collecting scores...")
-        scores = get_all_scores(player_id)
+        if Check_newMaps:
+            print("Collecting scores...")
+            scores = get_all_scores(player_id)
         print("filtering ranked scores")
         rankedScores = filter_ranked(scores)
 
         data = []
-        huhs = []
-
-        sum=0
-        huh=0
 
         print("Collecting country rank data...")
         for entry in rankedScores:
@@ -235,29 +244,22 @@ def main():
                 "Difficulty": difficulty
             })
 
-            if(isinstance(countrank, int)):
-                sum+=countrank
-            else:
-                huh+=1
-                huhs.append({"Song": leaderboard["songName"],"Level": leaderboard["difficulty"]["difficultyRaw"],"LevelAuthor": leaderboard["levelAuthorName"],})
-
             time.sleep(PASDERATELIMITSVP)
-
-
-        print("Country ranks OK, average country rank on sample: ",str(sum/(len(data)-huh)),", ",str(huh)," abnormalities (see above):", print(huhs))
 
         df = pd.DataFrame(data)
 
+        update_last_refresh()
+
         df.to_csv("scoresaber_ranked_with_country_rank.csv", index=False)
-        print("'scoresaber_ranked_with_country_rank.csv' file succesfully generated.")
-
-        update=update_last_refresh()
+        print(f"'scoresaber_ranked_with_country_rank_{config["last_refresh"]}.csv' file succesfully generated.")
 
 
-    with open(f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{update}.bplist", "w") as f:
+    LastUpdate = config["last_refresh"]
+
+    with open(f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{LastUpdate}.bplist", "w") as f:
         f.write(gen_playlist_countryRank())
     
-    print("Playlist \""f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{update}.bplist","\" generated! Window will auto close")
+    print("Playlist \""f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{update_last_refresh()}.bplist","\" generated! Window will auto close")
     time.sleep(100*PASDERATELIMITSVP)
 
 
