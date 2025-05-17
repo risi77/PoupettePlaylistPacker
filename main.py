@@ -71,12 +71,14 @@ def get_country():
     url = f"https://scoresaber.com/api/player/{player_id}/basic"
     response = requests.get(url,timeout=10)
     COUNTRY=response.json().get("country", [])
-    print("country set to "+COUNTRY)
+    PLAYER=response.json().get("name", [])
+    print(f"Hello {PLAYER}, country set to {COUNTRY}")
     return COUNTRY
 
 config = load_config() 
 player_id = config["PLAYER_ID"]
 MAX_MAPS = config["MAX_MAPS"]
+COUNTRYRANKSORT=config["COUNTRYRANK_MAJORSORT"]
 SORT = config["SORT"]
 TARGET = config["TARGET"]
 COUNTRY = get_country()
@@ -98,6 +100,7 @@ def update_last_refresh():
     with open("config.json", "w", encoding="utf-8") as f:
         json.dump(config, f, indent=4)
     
+    config = load_config()
     return config["last_refresh"]
 
 def get_all_scores(player_id):
@@ -107,7 +110,7 @@ def get_all_scores(player_id):
         page+=1
         url = f"https://scoresaber.com/api/player/{player_id}/scores?sort={SORT}&page={page}"
         response = requests.get(url,timeout=10)
-        print(f"API response to page {page}: {response.status_code}")
+        print(f"APIs response to page {page}: {response.status_code}")
         if response.status_code != 200:
             print(f"Error at page {page} (status {response.status_code})")
             break
@@ -144,7 +147,7 @@ def get_country_rank(hash_, DiffInt, country, player_id):
             
             for i, score in enumerate(scores, start=1):
                 if score["leaderboardPlayerInfo"]["id"] == player_id:
-                    return i  
+                    return score["rank"]
 
             if not scores or len(scores) < 1:
                 return None
@@ -155,8 +158,8 @@ def get_country_rank(hash_, DiffInt, country, player_id):
             return None 
 
 
-def gen_playlist_countryRank():
-    df = pd.read_csv("scoresaber_ranked_with_country_rank.csv")
+def gen_playlist_countryRank(arglastrefresh):
+    df = pd.read_csv(f"scoresaber_ranked_with_country_rank_{arglastrefresh}.csv")
     playlist = {
         "playlistTitle": "",
         "playlistAuthor": "la poupette",
@@ -165,6 +168,7 @@ def gen_playlist_countryRank():
     }
     print("Generating playlist...")
     sum=0
+    sumGlob=0
     huh=0
     comptTarget=0
 
@@ -173,7 +177,8 @@ def gen_playlist_countryRank():
     for _, row in df.iterrows():
         if(isinstance(row["CountryRank"], int)):
             sum+=row["CountryRank"]
-            if row["CountryRank"] > TARGET:
+            sumGlob+=row["Rank"]
+            if (row["CountryRank"] > TARGET and (row["Accuracy"]!=100)):
                 comptTarget+=1
                 match = re.match(r"_(.+)_Solo((?:[A-Z][a-z]*)+)", row["Difficulty"])
                 if not match:
@@ -199,8 +204,8 @@ def gen_playlist_countryRank():
     pourcentage = round(comptTarget / total * 100, 2) if total > 0 else 0
     playlist["playlistTitle"] = f"Snipe top {TARGET} {COUNTRY} ({total-comptTarget}/{total} : {100-pourcentage}%)"
 
-    
-    print("Country ranks OK, average country rank on sample: ",str(sum/(len(df)-huh)),", ",str(huh)," abnormalities (see above):", print(huhs))
+    print("Country ranks OK, average country rank on sample: ",str(round(sum/(len(df)-huh),6)),", ",str(huh)," abnormalities (see above):", print(huhs))
+    print("Average global rank on sample: ",str(round(sumGlob/(len(df)-huh),6)))
     
     return json.dumps(playlist, indent=4)
 
@@ -235,7 +240,7 @@ def main():
                 "Level": leaderboard["difficulty"]["difficultyRaw"],
                 "LevelAuthor": leaderboard["levelAuthorName"],
                 "PP": score["pp"],
-                "Accuracy": score["modifiedScore"] / leaderboard["maxScore"] if leaderboard["maxScore"] else 0,
+                "Accuracy": round(100*score["modifiedScore"] / leaderboard["maxScore"],4) if leaderboard["maxScore"] else "err",
                 "Score": score["modifiedScore"],
                 "Rank": score["rank"],
                 "CountryRank": countrank,
@@ -245,21 +250,27 @@ def main():
             })
 
             time.sleep(PASDERATELIMITSVP)
-
+    
         df = pd.DataFrame(data)
 
-        update_last_refresh()
-
-        df.to_csv("scoresaber_ranked_with_country_rank.csv", index=False)
-        print(f"'scoresaber_ranked_with_country_rank_{config["last_refresh"]}.csv' file succesfully generated.")
+        LastUpdate = update_last_refresh()
 
 
-    LastUpdate = config["last_refresh"]
+        df.to_csv(f"scoresaber_ranked_with_country_rank_{LastUpdate}.csv", index=False)
+        print(f"'scoresaber_ranked_with_country_rank_{LastUpdate}.csv' file succesfully generated.")
+    else:
+        config = load_config()
+        LastUpdate = config.get("last_refresh")
+
+    if(COUNTRYRANKSORT):
+        df = pd.read_csv(f"scoresaber_ranked_with_country_rank_{LastUpdate}.csv") #in case Check_SS was set to false
+        df.sort_values(by="CountryRank", inplace=True)
+        df.to_csv(f"scoresaber_ranked_with_country_rank_{LastUpdate}.csv", index=False)
 
     with open(f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{LastUpdate}.bplist", "w") as f:
-        f.write(gen_playlist_countryRank())
+        f.write(gen_playlist_countryRank(LastUpdate))
     
-    print("Playlist \""f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{update_last_refresh()}.bplist","\" generated! Window will auto close")
+    print("Playlist \""f"Playlist_Snipe_{SORT}_top{TARGET}_{COUNTRY}_{LastUpdate}.bplist","\" generated! Window will auto close")
     time.sleep(100*PASDERATELIMITSVP)
 
 

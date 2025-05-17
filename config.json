@@ -1,10 +1,11 @@
 {
     "PLAYER_ID": "76561198964267559",
     "MAX_MAPS": -1,
+    "COUNTRYRANK_MAJORSORT": true,
     "SORT": "recent",
     "TARGET": 1,
-    "I_PROMISE_IM_NOT_DDOSING": 0.2,
     "CHECK_SCORESABER": true,
     "CHECK_NEW_MAPS": true,
-    "last_refresh": "DONT_EDIT_BY_HAND"
+    "I_PROMISE_IM_NOT_DDOSING": 0.2,
+    "last_refresh": "DO_NOT_EDIT"
 }
