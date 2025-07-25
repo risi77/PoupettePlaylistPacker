@@ -1,0 +1,60 @@
+[
+    {
+        "Playlist_Name": "All my scores from 90% to 95%",
+        "Cover_Image": "super_cool_JPG_or_PNG_image_i_put_in_the_Images_folder.jpg",
+        "Sort": "Accuracy_Desc",
+        "Accuracy_Min": 90,
+        "Accuracy_Max": 95
+    },
+    {
+        "Playlist_Name": "Snipe scores not yet top 50 country",
+        "Cover_Image": "super_cool_JPG_or_PNG_image_i_put_in_the_Images_folder.jpg",
+        "Sort": "Country_Rank_Asc",
+        "Country_Rank_Min": 51
+    },
+    {
+        "Playlist_Name": "all my top 50 country scores",
+        "Cover_Image": "super_cool_JPG_or_PNG_image_i_put_in_the_Images_folder.jpg",
+        "Sort": "Country_Rank_Asc",
+        "Country_Rank_Max": 50
+    },
+    {
+        "Playlist_Name": "my 96% and more accuracy scores that give me between 200 and 300PP",
+        "Accuracy_Min": 96,
+        "Sort": "Recent_Desc",
+        "PP_Min": 200,
+        "PP_Max": 300
+    },
+    {
+        "Playlist_Name": "scores between 70% and 90% or 93% and 98%",
+        "Sort": "Accuracy_Asc",
+        "Accuracy_Min": 70,
+        "Accuracy_Max": 90
+    },
+    {
+        "Playlist_Name": "scores between 70% and 90% or 93% and 98%",
+        "Accuracy_Min": 93,
+        "Accuracy_Max": 98
+    },
+    {
+        "Playlist_Name": "The most niche playlist ever",
+        "Cover_Image": "I_like_seals.jpg",
+        "Include_Perfect_Scores": true,
+        "Sort": "Accuracy_Asc",
+        "Accuracy_Min": 90,
+        "Accuracy_Max": 99,
+        "Miss_Min": 1,
+        "Miss_Max": 50,
+        "Stars_Min": 3,
+        "Stars_Max": 9,
+        "Rank_Min": 50,
+        "Rank_Max": 10000,
+        "Country_Rank_Min": 1,
+        "Country_Rank_Max": 200
+    },
+    {
+        "Playlist_Name": "The most niche playlist ever",
+        "Accuracy_Min": 99.5,
+        "Accuracy_Max": 100
+    }
+]

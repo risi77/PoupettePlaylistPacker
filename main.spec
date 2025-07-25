@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['main.py'],
+    ['ppp\\main.py'],
     pathex=[],
     binaries=[],
-    datas=[],
+    datas=[('ppp', 'ppp'), ('ppp/utils', 'ppp/utils'), ('ppp/defaultImages', 'ppp/defaultImages'), ('ppp/playlistGeneration', 'ppp/playlistGeneration'), ('ppp/CSVGeneration', 'ppp/CSVGeneration')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

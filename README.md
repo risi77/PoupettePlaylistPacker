@@ -12,44 +12,56 @@ Welcome to
 
 ## Description
 
-This script allows you to get a snipe playlist of all your scores below a "target" in your country leaderboard!  
-Playlist is pooped out in the folder the executable is in, just move it to your playlists folder!  
+This script allows you to generate complex playlists from your scoresaber ranked scores!  
 
 ## Setup
 
-fill out config.json like so, and lauch PoupettePlaylistPacker.exe :  
+fill out config.json like so :  
   
 {  
     
   "PLAYER_ID": "76561198964267559",         <- your scoresaber ID  
     
-  "MAX_MAPS": -1,                           <- leave at -1 for full scan (how many ranked and unranked maps get scanned)  
-    
-  "COUNTRYRANK_MAJORSORT": true,            <- do you want your playlist to be sorted by ascending country rank (true), or let the other sort do it's job (false)?  
-    
-  "SORT": "recent",                         <- do you want your playlist to be sorted by recent ("recent") plays or top ("top") plays. If "COUNTRYRANK_MAJORSORT" is set to true, this will have practically no effects.  
-    
-  "TARGET": 1                               <- what rank would ou like to achieve on all maps? (1 or greater)  
-    
-  "CHECK_SCORESABER": true                  <- do you want to call scoresaber's api (true) or make playlists based on previous data (false). The program has to be run at least once with true, and running it
-  with false is faster but might produce out of date results  
-    
-  "CHECK_NEW_MAPS": true,                   <- do you want to check your profile for scores on new maps (true) or only refresh your ranks on already known maps (false). The program has to be run at least once with true, and running it with false is faster but might produce out of date results  
-    
-  "I_PROMISE_IM_NOT_DDOSING": 0.2           <- how many seconds should you wait after each request? I wouldn't recommend lowering it  
-    
-  "last_refresh": "0"                       <- don't mess with it, it's simply a handy saved value for future uses.  
-    
-}  
+  "I_PROMISE_IM_NOT_DDOSING": 0.2           <- how many seconds should the program wait after each request? I wouldn't recommend tinkering with it  
+     
+}
   
-Put a ‘cover.png’ image in the same folder if you think you have a good cover...  
-...you really can't compete though
+then take a look at my "EXAMPLE_PlaylistsSpecs.txt", and familiarize yourself with the spec system!  
+"EXAMPLE_PlaylistsSpecs.txt" works like so:  
+  
+[something]       # A comment on what something does/ what to look out for  
+                  # If the comment is too long, i will continue on the next line like so  
+[someting else]     # A comment on something else...  
+  
+All the available metrics and options are showed off in the last example of "EXAMPLE_PlaylistsSpecs.txt".  
+  
+Proper formed JSONS look like what is found in "PlaylistsSpecs.json" when first downloaded.
+I recommend you copy it in case something goes wrong and you need a fresh but not quite blank slate.
+Don't put comments in your real JSONS, or the program will fail.
 
-## random stuff and Poupette ASCII art
+Note that "PlaylistsSpecs.json" comes with example playlists built-in, you can try running the examples first to check if everything is OK.  
+  
+Put your custom covers in ‘/Images/’ as PNGs or JPGs.  
+  
+Once you feel ready, you can edit PlaylistsSpecs.json and modify and add as many playlists as you wish!  
+  
+If the stock examples don't crash but your custom playlists crash; take a deep breath; checks those pesky commas, quote marks and bracket thingis,
+They're most likely the culprits; They're very easy to mess up! Don't forget that everything is case-sensitive at the moment, so keeping one of
+the examples close-by while making your playlists is heavily recommended.  
+  
+## Running
 
-Very messy code, half french half english, it's my first actual piece of software and first executable  
-Very much inspired by Hatopopvr's MyBSList  
-Omg I managed to fail at the only important part of this script: getting country rank; now it shouldn't be modulo 12
+Once everything's good, lauch PoupettePlaylistPacker.exe, and it will automatically put together all the playlists described in "PlaylistsSpecs.json"
+grab your playlists in Results/Playlists/[whatever the latest folder is]   
+  
+
+## Random stuff and Poupette ASCII art
+
+Pretty messy code, it's my first actual piece of software and first executable  
+Very much inspired by Hatopopvr's MyBSList (even more now than before, with the spec system)  
+This project was originally only aimed at generating country rank playlists, but it grew to something very similar to MyBSList;  
+And I hope I can make grow further for it to become the most extensive ranked playlist generator around!  
+I already have Beatleader support in mind and have modified a good chunk of the code accordingly, but I wanted to get this version out first.
 
                 ++#*%#-                                  
            +=+*#*+%@%%*#*====+--:---+%*%=                

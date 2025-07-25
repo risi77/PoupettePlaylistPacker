@@ -1,0 +1,18 @@
+# Dossiers à ignorer
+.vscode/
+.venv/
+__pycache__/
+dist/
+build/
+.poupetteData/
+
+# Fichiers temporaires
+*.pyc
+*.pyo
+*.log
+*.zip
+*.exe
+
+# Fichiers perso
+plan poupette.txt
+PlaylistsSpecsvrai.json

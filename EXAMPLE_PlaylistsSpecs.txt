@@ -1,0 +1,114 @@
+[               # This bracket is very important, don't forget to open it here and close at the very end
+
+    #example 1
+
+    {
+        "Playlist_Name": "All my scores from 90% to 95%",           # The name of the playlist, don't forget the comma between each line. 
+                                                                    # if the data contains a word (Playlist_Name, Cover_Image...), encase it with quote marks.
+        "Cover_Image": "super_cool_JPG_or_PNG_image_i_put_in_the_Images_folder.jpg",            # The path of the cover image from the /Images folder you want . if it doesn't exist or nothing is put there, default image will be used.
+                                                                                                # if the data is numerical (accuracy, ranks, misses...), do not encase it with quote marks.
+        "Accuracy_Min": 90,             # The range works as follows: given min <= the playlist's scores <= given max
+        "Accuracy_Max": 95              # No comma after the last item of each playlist
+    },                                  # Don't forget the comma between each playlist though
+
+    #example 2
+
+    {
+        "Playlist_Name": "All my scores from 90% to 95%, sorted by accuracy",
+        "Sort": "Accuracy_Desc",            # Sorting can take any numerical metric (ranks, misses, accuracy, basically anything that can have a _Min or _Max) followed by and underscore(_) and "Asc" (ascending) or "Desc" (descending) to 
+                                            # order your scores in a given playlist.
+                                            # In game, the beginning of the playlist is at the top of the menu. So here, the Sort by descending Accuracy would put your highest acc score up in the menu, and you would have to scroll
+                                            # down to find lower acc plays. Ascending sort would put your lowest acc at the top and your highest acc will be at the bottom of the playlist.
+                                            # By default, playlists are sorted by the descending time of upload. Time of upload sort can be accessed with the "Sort": "Recent_" keyword, followed by Asc or Desc.
+        "Accuracy_Min": 90,
+        "Accuracy_Max": 95
+    },   
+
+    #example 3
+
+    {
+        "Playlist_Name": "Snipe scores not yet top 50 country",
+        "Cover_Image": "super_cool_JPG_or_PNG_image_i_put_in_the_Images_folder.jpg",
+        "Country_Rank_Min": 51         # If a minimum is given but no maximum is, the range will be (given minimum to infinity)
+    },
+
+    #example 4
+
+    {
+        "Playlist_Name": "all my top 50 country scores",
+        "Cover_Image": "super_cool_JPG_or_PNG_image_i_put_in_the_Images_folder.jpg",
+        "Country_Rank_Max": 50         # If a maximum is given but no minimum is, the range will be (lowest value to given maximum)
+    },
+
+    #example 5
+
+    {
+        "Playlist_Name": "my 96% and more accuracy scores that give me between 200 and 300PP",  # You can filter multiple metrics at once if you put them all in the same playlist,
+                                                                                                # I'll explain it with boxes. (AND boolean operator for you nerds)
+
+        "Accuracy_Min": 96,         # puts only the scores with 96% accuracy or more in a box, and gives the box to the next line.
+        "PP_Min": 200,          # takes the box and throws away any scores that doesn't give at least 200 pp, gives the box to the other line.
+        "PP_Max": 300           # takes the box and throws away any scores that gives more than 300 pp,
+                                # and generates the playlist with the scores remaining in the box.
+    },
+
+    #example 6
+
+    {
+        "Playlist_Name": "scores between 40% and 50% or 90% and 95%",           # You can't normally describe that in one playlist, but you can cheat a little. 
+                                                                                # Lets talk boxes again. (OR boolean operator for you nerds)
+        "Cover_Image": "any_Image.png",
+        "Accuracy_Min": 40,             # Puts the scores with at least 40% accuracy in a box, and gives the box to the next line.
+        "Accuracy_Max": 50              # Takes the box and throws away any scores with more than 50% accuracy. Remember this box.
+    },
+    {
+        "Playlist_Name": "scores between 40% and 50% or 90% and 95%",            # If there is a playlist with the name of another playlist, it will combine the two boxes.
+        "Accuracy_Min": 90,             # Puts the scores with at least 90% accuracy in a box, and gives the box to the next line.
+        "Accuracy_Max": 95              # Takes the box and throws away any scores with more than 95% accuracy. 
+                                        # Now it takes this box and puts all its scores in the previous box and generates a playlist with all the scores
+                                        # You can of course combine more complex boxes, as in the next example
+    },
+
+    #example 7, the most extensive, complex (and useless in the real world) example
+
+    {
+        "Playlist_Name": "The most niche playlist ever",            # To be clear this example is here to show what metrics this tool can work with.
+                                                                    # This playlist would be EXTREMELY specific and weird
+        "Cover_Image": "I_like_seals.jpg",
+        "Include_Perfect_Scores": true,             # If you want perfect(un-PB-able) scores in the playlist, defaults to false
+                                                    # If the data is a boolean (true or false) don't encase it in quote marks
+        "Sort": "Miss_Asc"
+        "Accuracy_Min": 98,
+        "Accuracy_Max": 99,
+        "Miss_Min": 0,              # Misses include bad cuts, a "FC" with a wall or bomb hit will count as a 1 miss here
+        "Miss_Max": 10,
+        "Stars_Min": 3,             # Filter by scoresaber stars
+        "Stars_Max": 5,
+        "Rank_Min": 101,            # For me, this defines top #200 scores without top #100 scores well, since the playlist INCLUDE the min and max.
+        "Rank_Max": 200,
+        "Country_Rank_Min": 20,         # Please note that having country rank requirements in playlists will significantly increase playlist generation time,
+        "Country_Rank_Max": 40          # Due to the way scoresaber's score are presented via their API (nerd).
+                                        # Having 1000000 playlists utilizing country rank will not take much longer than only one having country rank though,
+                                        # It's a first playlist related thing.
+    },
+    {
+        "Playlist_Name": "The most niche playlist ever",            # continuing this goofy playlist, you probably get this by now
+                                                                    # should be no need to put cover image and perfect scores back
+        "Accuracy_Min": 30,
+        "Accuracy_Max": 40,
+        "Miss_Min": 8,              #the two parts of the playlist can overlap without causing any problems
+        "Miss_Max": 15,
+        "Stars_Min": 6,
+        "Stars_Max": 9,
+        "Rank_Min": 1000,
+        "Rank_Max": 2005,
+        "Country_Rank_Min": 777,
+        "Country_Rank_Max": 888
+    },
+    {
+        "Playlist_Name": "The most niche playlist ever",            # continuing this goofy playlist, you probably get this by now
+                                                                    # you can put as many "parallel boxes" as you want, even with other metrics
+        "Stars_Min": 10,
+        "Stars_Max": 11.7364
+    }           # no comma after the last playlist
+]           #close this bracket
