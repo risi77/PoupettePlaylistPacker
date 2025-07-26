@@ -1,9 +1,11 @@
 # folders to ignore
 .vscode/
 .venv/
+venv/
 __pycache__/
 dist/
 build/
+Results/
 .poupetteData/
 
 # temp files
