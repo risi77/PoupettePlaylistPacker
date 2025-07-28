@@ -45,7 +45,7 @@ def gen_playlist(titleAndSpecsTuple):
         "playlistTitle": title,
         "playlistAuthor": "la Poupette",
         "songs": [],
-        "image": "base64," + image_to_base64(image)
+        "image": image_to_base64(image)
     }
 
     for row in scores:

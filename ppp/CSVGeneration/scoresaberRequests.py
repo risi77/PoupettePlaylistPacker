@@ -118,15 +118,19 @@ def IsCSVRefreshNeeded(leaderboard="SS"):
         lastUpdate = get_LastCSVdate(leaderboard)
         df = load_LastCSV()
         scores = df.to_dict(orient="records")
-        # if the country rank is needed, return if countryrank has been fetched
-        if PrePassChecks():
-            return not (isinstance(scores[1]["Country_Rank"], int))
+
         # checks if last refresh has been done in the previous 24 hours, else tells to refresh
         if (str_to_timestamp(lastUpdate)+86400) < int(datetime.now().timestamp()):
             return True
+        # if the country rank is needed, returns wether the countryrank has already been fetched
+        if PrePassChecks():
+            return not (isinstance(scores[1]["Country_Rank"], int))
+        # if file exists, has been refreshed in the last 24 hours and has country ranks if needed but last score still is fresher, then refresh
+        if (get_timestamp_last_score() > str_to_timestamp(lastUpdate)):
+            return True
     else:
         return True
-    # if file exists, has been refreshed in the last 24 hours but last score still is fresher, then refresh
+
     return (get_timestamp_last_score() > str_to_timestamp(lastUpdate))
 
 
